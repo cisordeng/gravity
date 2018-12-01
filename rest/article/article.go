@@ -11,15 +11,9 @@ type Article struct {
 
 func (o *Article) Get() {
 	articleId, _ := o.GetInt("article_id", 0)
-	article := b_article.GetArticleById(articleId)
+	article, err, be := b_article.GetArticleById(articleId)
 	data := b_article.EncodeArticle(article)
-	response := rest.MakeResponse(
-		200,
-		data,
-		"",
-		"",
-		"",
-	)
+	response := rest.MakeResponse(data, err, be)
 	o.ReturnJSON(response)
 }
 
@@ -30,15 +24,9 @@ func (o *Article) GetAll() {
 func (o *Article) Put() {
 	Title := o.GetString("title", "")
 	Content := o.GetString("content", "")
-	article := b_article.Create(Title, Content)
+	article, err, be := b_article.Create(Title, Content)
 	data := b_article.EncodeArticle(article)
-	response := rest.MakeResponse(
-		200,
-		data,
-		"",
-		"",
-		"",
-	)
+	response := rest.MakeResponse(data, err, be)
 	o.ReturnJSON(response)
 }
 

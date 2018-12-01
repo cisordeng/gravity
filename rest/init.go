@@ -13,13 +13,32 @@ type Response struct {
 	InnerErrMsg string 		`json:"innerErrMsg"`
 }
 
-func MakeResponse(code int32, data business.Map, errCode string, errMsg string, innerErrMsg string) *Response {
-	return &Response{
-		code,
+func MakeResponse(data business.Map, err error, be BusinessError) *Response {
+	 response := &Response{
+		200,
 		data,
-		errCode,
-		errMsg,
-		innerErrMsg,
+		"",
+		"",
+		"",
+	}
+	CheckErr(response, err, be)
+	return response
+}
+
+type BusinessError struct {
+	ErrCode string
+	ErrMsg string
+}
+
+func CheckErr(response *Response, err error, be BusinessError) {
+	if err != nil {
+		*response = Response{ // 指针引用
+			500,
+			"",
+			be.ErrCode,
+			be.ErrMsg,
+			err.Error(),
+		}
 	}
 }
 
