@@ -46,7 +46,8 @@ type RestResource struct {
 	beego.Controller
 }
 
-func (r *RestResource) ReturnJSON(response *Response) {
+func (r *RestResource) ReturnJSON(data business.Map, err error, be BusinessError) {
+	response := MakeResponse(data, err, be)
 	r.Data["json"] = response
 	r.ServeJSON()
 }
