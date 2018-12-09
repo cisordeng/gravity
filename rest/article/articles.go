@@ -10,6 +10,12 @@ type Articles struct {
 	rest.RestResource
 }
 
+func init () {
+	app := "article"
+	resource := "articles"
+	rest.Resources[app + "." + resource] = new(Articles)
+}
+
 func (o *Articles) Get() {
 	articles, err, be := b_article.GetArticles()
 	data := make([]business.Map, 0)

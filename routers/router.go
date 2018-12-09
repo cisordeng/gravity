@@ -1,20 +1,16 @@
 package routers
 
 import (
-	"mango/rest/article"
+	"github.com/astaxie/beego"
 	"strings"
 
-	"github.com/astaxie/beego"
+	"mango/rest"
+	_ "mango/rest/article"
 )
 
-type Routers map[string]beego.ControllerInterface
-
 func init() {
-	resources := Routers{
-		"article.article": new(article.Article),
-		"article.articles": new(article.Articles),
-	}
-	for resource, entrance := range resources {
+	beego.Notice(rest.Resources)
+	for resource, entrance := range rest.Resources {
 		beego.Router(strings.Replace(resource, ".", "/", -1 ), entrance)
 	}
 }

@@ -9,6 +9,12 @@ type Article struct {
 	rest.RestResource
 }
 
+func init () {
+	app := "article"
+	resource := "article"
+	rest.Resources[app + "." + resource] = new(Article)
+}
+
 func (o *Article) Get() {
 	articleId, _ := o.GetInt("article_id", 0)
 	article, err, be := b_article.GetArticleById(articleId)

@@ -5,6 +5,8 @@ import (
 	"mango/business"
 )
 
+var Resources = map[string]beego.ControllerInterface{}
+
 type Response struct {
 	Code 		int32 		`json:"code"`
 	Data 		interface{} `json:"data"`
