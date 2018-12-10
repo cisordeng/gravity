@@ -6,11 +6,12 @@ import (
 
 	"mango/rest"
 	_ "mango/rest/article"
+	_ "mango/rest/user"
 )
 
 func init() {
-	beego.Notice(rest.Resources)
 	for resource, entrance := range rest.Resources {
+		beego.Notice("+resource: " + resource)
 		beego.Router(strings.Replace(resource, ".", "/", -1 ), entrance)
 	}
 }

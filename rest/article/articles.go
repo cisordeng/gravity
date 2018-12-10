@@ -11,9 +11,8 @@ type Articles struct {
 }
 
 func init () {
-	app := "article"
-	resource := "articles"
-	rest.Resources[app + "." + resource] = new(Articles)
+	resource := "article.articles"
+	rest.Resources[resource] = new(Articles)
 }
 
 func (o *Articles) Get() {

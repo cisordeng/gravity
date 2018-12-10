@@ -2,7 +2,6 @@ package article
 
 import (
 	"fmt"
-	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	m_article "mango/models/article"
 	"mango/rest"
@@ -29,13 +28,12 @@ func InitArticleFromModel(model *m_article.Article) *Article {
 	return instance
 }
 
-func Create(Title string, Content string) (article *Article, err error, businessError rest.BusinessError) {
+func Create(Title string, Content string) (article *Article, err error, be rest.BusinessError) {
 	model := m_article.Article{
 		Title: Title,
 		Content: Content,
 	}
-	Id, err := orm.NewOrm().Insert(&model)
-	beego.NotNil(Id)
+	_, err = orm.NewOrm().Insert(&model)
 	return InitArticleFromModel(&model), err, rest.BusinessError{
 		ErrCode: "article:create_failed",
 		ErrMsg:  fmt.Sprintf("创建%sarticle失败", Title),

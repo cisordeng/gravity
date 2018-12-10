@@ -10,9 +10,8 @@ type Article struct {
 }
 
 func init () {
-	app := "article"
-	resource := "article"
-	rest.Resources[app + "." + resource] = new(Article)
+	resource := "article.article"
+	rest.Resources[resource] = new(Article)
 }
 
 func (o *Article) Get() {
