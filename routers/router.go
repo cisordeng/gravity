@@ -10,8 +10,8 @@ import (
 )
 
 func init() {
-	for resource, entrance := range rest.Resources {
-		beego.Notice("+resource: " + resource)
-		beego.Router(strings.Replace(resource, ".", "/", -1 ), entrance)
+	for _, resource := range rest.Resources {
+		beego.Notice("+resource: " + resource.Resource(), resource.Params())
+		beego.Router(strings.Replace(resource.Resource(), ".", "/", -1 ), resource)
 	}
 }

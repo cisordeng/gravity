@@ -10,16 +10,28 @@ type UserLogin struct {
 }
 
 func init () {
-	resource := "user.user_login"
-	rest.Resources[resource] = new(UserLogin)
+	rest.Resources = append(rest.Resources, new(UserLogin))
 }
 
-func (o *UserLogin) Put() {
-	Username := o.GetString("username", "")
-	Password := o.GetString("password", "")
+func (this *UserLogin) Resource() string {
+	return "user.user_login"
+}
+
+func (this *UserLogin) Params() map[string][]string {
+	return map[string][]string{
+		"PUT":  []string{
+			"username",
+			"password",
+		},
+	}
+}
+
+func (this *UserLogin) Put() {
+	Username := this.GetString("username", "")
+	Password := this.GetString("password", "")
 	user, err, be := b_user.LoginCheck(Username, Password)
 	data := b_user.EncodeUser(user)
-	o.ReturnJSON(data, err, be)
+	this.ReturnJSON(data, err, be)
 }
 
 

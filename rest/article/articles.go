@@ -11,17 +11,20 @@ type Articles struct {
 }
 
 func init () {
-	resource := "article.articles"
-	rest.Resources[resource] = new(Articles)
+	rest.Resources = append(rest.Resources, new(Articles))
 }
 
-func (o *Articles) Get() {
+func (this *Articles) Resource() string {
+	return "article.articles"
+}
+
+func (this *Articles) Get() {
 	articles, err, be := b_article.GetArticles()
 	data := make([]business.Map, 0)
 	for _, article := range articles {
 		data = append(data, b_article.EncodeArticle(article))
 	}
-	o.ReturnJSON(business.Map{
+	this.ReturnJSON(business.Map{
 		"articles": data,
 	}, err, be)
 }
