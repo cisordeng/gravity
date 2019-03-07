@@ -8,6 +8,7 @@ import (
 	"mango/rest"
 	_ "mango/rest/article"
 	_ "mango/rest/user"
+	_ "mango/rest/ws"
 )
 
 func init() {
