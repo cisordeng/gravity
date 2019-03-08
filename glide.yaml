@@ -1,0 +1,11 @@
+package: mango
+import:
+- package: github.com/cisordeng/beego
+  version: ^1.11.1
+  subpackages:
+  - orm
+  - plugins/cors
+- package: github.com/go-sql-driver/mysql
+  version: ^1.4.1
+- package: github.com/gorilla/websocket
+  version: ^1.4.0

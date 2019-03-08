@@ -2,7 +2,7 @@ package article
 
 import (
 	"fmt"
-	"github.com/astaxie/beego/orm"
+	"github.com/cisordeng/beego/orm"
 	m_article "mango/models/article"
 	"mango/rest"
 )

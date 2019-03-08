@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/plugins/cors"
+	"github.com/cisordeng/beego"
+	"github.com/cisordeng/beego/plugins/cors"
 	"strings"
 
 	"mango/rest"

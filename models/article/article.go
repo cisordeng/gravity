@@ -1,7 +1,7 @@
 package article
 
 import (
-	"github.com/astaxie/beego/orm"
+	"github.com/cisordeng/beego/orm"
 	"time"
 )
 

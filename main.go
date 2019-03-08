@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/astaxie/beego"
+	"github.com/cisordeng/beego"
 
 	_ "mango/models"
 	_ "mango/routers"

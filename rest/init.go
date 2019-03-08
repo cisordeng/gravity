@@ -3,7 +3,7 @@ package rest
 import (
 	"errors"
 	"fmt"
-	"github.com/astaxie/beego"
+	"github.com/cisordeng/beego"
 	"mango/business"
 )
 

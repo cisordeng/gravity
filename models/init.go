@@ -2,8 +2,8 @@ package models
 
 import (
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"github.com/cisordeng/beego"
+	"github.com/cisordeng/beego/orm"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "mango/models/article"

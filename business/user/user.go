@@ -2,7 +2,7 @@ package user
 
 import (
 	"fmt"
-	"github.com/astaxie/beego/orm"
+	"github.com/cisordeng/beego/orm"
 	m_user "mango/models/user"
 	"mango/pandora/encrypt"
 	"mango/rest"
