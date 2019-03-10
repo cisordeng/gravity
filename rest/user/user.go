@@ -1,16 +1,16 @@
 package user
 
 import (
+	"github.com/cisordeng/beego/xenon"
 	b_user "mango/business/user"
-	"mango/rest"
 )
 
 type User struct {
-	rest.RestResource
+	xenon.RestResource
 }
 
 func init () {
-	rest.Resources = append(rest.Resources, new(User))
+	xenon.Resources = append(xenon.Resources, new(User))
 }
 
 func (this *User) Resource() string {
@@ -32,16 +32,16 @@ func (this *User) Params() map[string][]string {
 
 func (this *User) Get() {
 	Username := this.GetString("username", "")
-	article, err, be := b_user.GetUserByName(Username)
+	article := b_user.GetUserByName(&this.BCtx, Username)
 	data := b_user.EncodeUser(article)
-	this.ReturnJSON(data, err, be)
+	this.ReturnJSON(data)
 }
 
 func (this *User) Put() {
 	Username := this.GetString("username", "")
 	Password := this.GetString("password", "")
 	Avatar := this.GetString("avatar", "")
-	article, err, be := b_user.Create(Username, Password, Avatar)
-	data := b_user.EncodeUser(article)
-	this.ReturnJSON(data, err, be)
+	user := b_user.NewUser(&this.BCtx, Username, Password, Avatar)
+	data := b_user.EncodeUser(user)
+	this.ReturnJSON(data)
 }

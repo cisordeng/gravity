@@ -3,9 +3,9 @@ package user
 import (
 	"fmt"
 	"github.com/cisordeng/beego/orm"
+	"github.com/cisordeng/beego/xenon"
 	m_user "mango/models/user"
 	"mango/pandora/encrypt"
-	"mango/rest"
 	"time"
 )
 
@@ -29,15 +29,15 @@ func InitUserFromModel(model *m_user.User) *User {
 	return instance
 }
 
-func Create(Username string, Password string, Avatar string) (user *User, err error, be rest.BusinessError) {
+func NewUser(ctx *xenon.BCtx, Username string, Password string, Avatar string) (user *User) {
 	model := m_user.User{
 		Username: Username,
 		Password: encrypt.String2MD5(Password),
 		Avatar: Avatar,
 	}
-	_, err = orm.NewOrm().Insert(&model)
-	return InitUserFromModel(&model), err, rest.BusinessError{
-		ErrCode: "user:create_fail",
-		ErrMsg:  fmt.Sprintf("创建%suser失败", Username),
-	}
+	Error := xenon.Error{}
+	_, Error.Inner = orm.NewOrm().Insert(&model)
+	Error.Business = xenon.NewBusinessError("user:create_fail", fmt.Sprintf("创建%suser失败", Username))
+	ctx.Errors = append(ctx.Errors, Error)
+	return InitUserFromModel(&model)
 }

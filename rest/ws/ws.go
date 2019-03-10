@@ -2,21 +2,21 @@ package ws
 
 import (
 	"fmt"
+	"github.com/cisordeng/beego/xenon"
 	"github.com/gorilla/websocket"
 	"log"
 	"mango/business"
-	"mango/rest"
 	"net/http"
 	"time"
 )
 
 type Ws struct {
-	rest.RestResource
+	xenon.RestResource
 	websocket.Conn
 }
 
 func init () {
-	rest.Resources = append(rest.Resources, new(Ws))
+	xenon.Resources = append(xenon.Resources, new(Ws))
 }
 
 func (this *Ws) Resource() string {
@@ -75,5 +75,5 @@ func (this *Ws) Get() {
 		//broadcast <- msg
 	}
 
-	this.ReturnJSON(business.Map{}, nil, rest.BusinessError{})
+	this.ReturnJSON(xenon.Map{})
 }

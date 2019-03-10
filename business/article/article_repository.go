@@ -3,28 +3,30 @@ package article
 import (
 	"fmt"
 	"github.com/cisordeng/beego/orm"
+	"github.com/cisordeng/beego/xenon"
 	m_article "mango/models/article"
-	"mango/rest"
 )
 
-func GetArticleById(ArticleId int) (article *Article, err error, be rest.BusinessError) {
+func GetArticleById(ArticleId int) (article *Article, error xenon.Error) {
 	model := m_article.Article{}
-	err = orm.NewOrm().QueryTable("article_article").Filter("Id", ArticleId).One(&model)
-	Article := InitArticleFromModel(&model)
-	return Article, err, rest.BusinessError{
-		ErrCode: "orm:article:not_exits",
-		ErrMsg:  fmt.Sprintf("id为%d的article不存在", ArticleId),
+	error.Inner = orm.NewOrm().QueryTable("article_article").Filter("Id", ArticleId).One(&model)
+	error.Business = &xenon.BusinessError{
+		"orm:article:not_exits",
+		fmt.Sprintf("id为%d的article不存在", ArticleId),
 	}
+	article = InitArticleFromModel(&model)
+	return article, error
 }
 
-func GetArticles() (articles []*Article, err error, be rest.BusinessError) {
+func GetArticles() (articles []*Article, error xenon.Error) {
 	var models []m_article.Article
-	_, err = orm.NewOrm().QueryTable("article_article").All(&models)
-	for _, model := range models {
-		articles = append(articles, InitArticleFromModel(&model))
-	}
-	return articles, err, rest.BusinessError{
+	_, error.Inner = orm.NewOrm().QueryTable("article_article").All(&models)
+	error.Business = &xenon.BusinessError{
 		ErrCode: "orm:articles:get_fail",
 		ErrMsg:  "获取articles失败",
 	}
+	for _, model := range models {
+		articles = append(articles, InitArticleFromModel(&model))
+	}
+	return articles, error
 }

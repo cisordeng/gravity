@@ -1,16 +1,16 @@
 package article
 
 import (
+	"github.com/cisordeng/beego/xenon"
 	b_article "mango/business/article"
-	"mango/rest"
 )
 
 type Article struct {
-	rest.RestResource
+	xenon.RestResource
 }
 
 func init () {
-	rest.Resources = append(rest.Resources, new(Article))
+	xenon.Resources = append(xenon.Resources, new(Article))
 }
 
 func (this *Article) Resource() string {
@@ -31,17 +31,19 @@ func (this *Article) Params() map[string][]string {
 
 func (this *Article) Get() {
 	Id, _ := this.GetInt("id", 0)
-	article, err, be := b_article.GetArticleById(Id)
+	article, err := b_article.GetArticleById(Id)
+	this.Error = err
 	data := b_article.EncodeArticle(article)
-	this.ReturnJSON(data, err, be)
+	this.ReturnJSON(data)
 }
 
 func (this *Article) Put() {
 	Title := this.GetString("title", "")
 	Content := this.GetString("content", "")
-	article, err, be := b_article.Create(Title, Content)
+	article, err := b_article.NewArticle(Title, Content)
+	this.Error = err
 	data := b_article.EncodeArticle(article)
-	this.ReturnJSON(data, err, be)
+	this.ReturnJSON(data)
 }
 
 

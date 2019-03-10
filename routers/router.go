@@ -3,16 +3,16 @@ package routers
 import (
 	"github.com/cisordeng/beego"
 	"github.com/cisordeng/beego/plugins/cors"
+	"github.com/cisordeng/beego/xenon"
 	"strings"
 
-	"mango/rest"
-	_ "mango/rest/article"
-	_ "mango/rest/user"
-	_ "mango/rest/ws"
+	//_ "mango/rest/article"
+	_ "mango/rest"
+	//_ "mango/rest/ws"
 )
 
 func init() {
-	for _, resource := range rest.Resources {
+	for _, resource := range xenon.Resources {
 		beego.Notice("+resource: " + resource.Resource(), resource.Params())
 		beego.Router(strings.Replace(resource.Resource(), ".", "/", -1 ), resource)
 	}

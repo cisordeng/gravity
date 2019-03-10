@@ -1,11 +1,11 @@
 package article
 
 import (
-	"mango/business"
+	"github.com/cisordeng/beego/xenon"
 )
 
-func EncodeArticle(article *Article) business.Map {
-	mapArticle := business.Map{
+func EncodeArticle(article *Article) xenon.Map {
+	mapArticle := xenon.Map{
 		"id": article.Id,
 		"title": article.Title,
 		"content": article.Content,

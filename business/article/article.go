@@ -3,8 +3,8 @@ package article
 import (
 	"fmt"
 	"github.com/cisordeng/beego/orm"
+	"github.com/cisordeng/beego/xenon"
 	m_article "mango/models/article"
-	"mango/rest"
 	"time"
 )
 
@@ -28,14 +28,15 @@ func InitArticleFromModel(model *m_article.Article) *Article {
 	return instance
 }
 
-func Create(Title string, Content string) (article *Article, err error, be rest.BusinessError) {
+func NewArticle(Title string, Content string) (article *Article, error xenon.Error) {
 	model := m_article.Article{
 		Title: Title,
 		Content: Content,
 	}
-	_, err = orm.NewOrm().Insert(&model)
-	return InitArticleFromModel(&model), err, rest.BusinessError{
+	_, error.Inner = orm.NewOrm().Insert(&model)
+	error.Business = &xenon.BusinessError{
 		ErrCode: "article:create_failed",
 		ErrMsg:  fmt.Sprintf("创建%sarticle失败", Title),
 	}
+	return InitArticleFromModel(&model), error
 }
