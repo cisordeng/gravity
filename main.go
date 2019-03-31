@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/cisordeng/beego"
 
-	_ "mango/models"
-	_ "mango/routers"
+	_ "gravity/models"
+	_ "gravity/routers"
 )
 
 func main() {

@@ -5,7 +5,6 @@ import (
 	"github.com/cisordeng/beego/xenon"
 	"github.com/gorilla/websocket"
 	"log"
-	"mango/business"
 	"net/http"
 	"time"
 )
@@ -16,7 +15,7 @@ type Ws struct {
 }
 
 func init () {
-	xenon.Resources = append(xenon.Resources, new(Ws))
+	xenon.RegisterResource(new(Ws))
 }
 
 func (this *Ws) Resource() string {
@@ -55,7 +54,7 @@ func (this *Ws) Get() {
 	*/
 	for {
 		time.Sleep(time.Second * 3)
-		msg := business.Map{} // Read in a new message as JSON and map it to a Message object
+		msg := xenon.Map{} // Read in a new message as JSON and map it to a Message object
 		err := ws.ReadJSON(&msg)
 		if err != nil {
 			log.Printf("页面可能断开啦 ws.ReadJSON error: %v", err)
@@ -63,7 +62,7 @@ func (this *Ws) Get() {
 			break
 		} else {
 			fmt.Println("接受到从页面上反馈回来的信息 ", msg)
-			err := ws.WriteJSON(business.Map{
+			err := ws.WriteJSON(xenon.Map{
 				"a": 1,
 				"b": 2,
 			})

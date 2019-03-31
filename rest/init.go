@@ -1,5 +1,6 @@
 package rest
 
 import (
-	_ "mango/rest/user"
+	_ "gravity/rest/account"
+	//_ "gravity/rest/ws"
 )

@@ -2,12 +2,13 @@ package models
 
 import (
 	"fmt"
+
 	"github.com/cisordeng/beego"
 	"github.com/cisordeng/beego/orm"
-
 	_ "github.com/go-sql-driver/mysql"
-	_ "mango/models/article"
-	_ "mango/models/user"
+
+	_ "gravity/models/account"
+	_ "gravity/models/rhythm"
 )
 
 func init() {

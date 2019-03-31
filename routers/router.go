@@ -1,14 +1,13 @@
 package routers
 
 import (
+	"strings"
+
 	"github.com/cisordeng/beego"
 	"github.com/cisordeng/beego/plugins/cors"
 	"github.com/cisordeng/beego/xenon"
-	"strings"
 
-	//_ "mango/rest/article"
-	_ "mango/rest"
-	//_ "mango/rest/ws"
+	_ "gravity/rest"
 )
 
 func init() {
