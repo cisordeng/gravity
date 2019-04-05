@@ -1,6 +1,8 @@
 package rhythm
 
-import "github.com/cisordeng/beego/xenon"
+import (
+	"github.com/cisordeng/beego/xenon"
+)
 
 func EncodeRhythm(rhythm *Rhythm) xenon.Map {
 

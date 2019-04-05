@@ -3,7 +3,7 @@ package user
 import (
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
-	m_user "gravity/models/account"
+	mUser "gravity/model/account"
 	"time"
 )
 
@@ -17,7 +17,7 @@ type User struct {
 func init() {
 }
 
-func InitUserFromModel(model *m_user.User) *User {
+func InitUserFromModel(model *mUser.User) *User {
 	instance := new(User)
 	instance.Id = model.Id
 	instance.Username = model.Username
@@ -28,7 +28,7 @@ func InitUserFromModel(model *m_user.User) *User {
 }
 
 func NewUser(ctx *xenon.Ctx, Username string, Password string, Avatar string) (user *User) {
-	model := m_user.User{
+	model := mUser.User{
 		Username: Username,
 		Password: xenon.String2MD5(Password),
 		Avatar: Avatar,

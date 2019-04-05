@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/cisordeng/beego/xenon"
 
-	_ "gravity/models"
+	_ "gravity/model"
 	_ "gravity/rest"
 )
 

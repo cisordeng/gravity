@@ -4,7 +4,7 @@ import (
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
 
-	mRhythm "gravity/models/rhythm"
+	mRhythm "gravity/model/rhythm"
 )
 
 func GetRhythmSets(ctx *xenon.Ctx, filters xenon.Map, orderExprs ...string ) []*RhythmSet {
