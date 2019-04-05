@@ -4,7 +4,7 @@ import (
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
 
-	mUser "gravity/model/account"
+	mUser "nature/model/account"
 )
 
 func GetUserByName(ctx *xenon.Ctx, Username string) (user *User)  {

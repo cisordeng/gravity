@@ -3,7 +3,7 @@ package rhythm
 import (
 	"time"
 
-	mRhythm "gravity/model/rhythm"
+	mRhythm "nature/model/rhythm"
 )
 
 type Rhythm struct {

@@ -1,9 +1,9 @@
 package rest
 
 import (
-	_ "gravity/rest/account"
-	//_ "gravity/rest/ws"
-	_ "gravity/rest/rhythm"
+	_ "nature/rest/account"
+	//_ "nature/rest/ws"
+	_ "nature/rest/rhythm"
 )
 
 func init() {

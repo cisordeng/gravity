@@ -2,7 +2,7 @@ package rhythm
 
 import (
 	"github.com/cisordeng/beego/xenon"
-	bRhythm "gravity/business/rhythm"
+	bRhythm "nature/business/rhythm"
 )
 
 type RhythmSets struct {

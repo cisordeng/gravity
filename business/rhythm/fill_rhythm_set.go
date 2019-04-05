@@ -5,7 +5,7 @@ import (
 	"github.com/cisordeng/beego/xenon"
 	"sort"
 
-	mRhythm "gravity/model/rhythm"
+	mRhythm "nature/model/rhythm"
 )
 
 func Fill(ctx *xenon.Ctx, rhythmSets []*RhythmSet, option xenon.FillOption) {

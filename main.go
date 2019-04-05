@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/cisordeng/beego/xenon"
 
-	_ "gravity/model"
-	_ "gravity/rest"
+	_ "nature/model"
+	_ "nature/rest"
 )
 
 func main() {

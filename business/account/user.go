@@ -6,7 +6,7 @@ import (
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
 
-	mUser "gravity/model/account"
+	mUser "nature/model/account"
 
 )
 

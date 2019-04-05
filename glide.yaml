@@ -1,4 +1,4 @@
-package: gravity
+package: nature
 import:
 - package: github.com/cisordeng/beego
   subpackages:

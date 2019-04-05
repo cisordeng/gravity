@@ -2,7 +2,7 @@ package account
 
 import (
 	"github.com/cisordeng/beego/xenon"
-	bUser "gravity/business/account"
+	bUser "nature/business/account"
 )
 
 type User struct {

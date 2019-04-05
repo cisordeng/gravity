@@ -1,8 +1,8 @@
 package model
 
 import (
-	_ "gravity/model/account"
-	_ "gravity/model/rhythm"
+	_ "nature/model/account"
+	_ "nature/model/rhythm"
 )
 
 func init() {
