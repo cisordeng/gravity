@@ -1,7 +1,6 @@
 package user
 
 import (
-	"fmt"
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
 	m_user "gravity/models/account"
@@ -28,15 +27,13 @@ func InitUserFromModel(model *m_user.User) *User {
 	return instance
 }
 
-func NewUser(ctx *xenon.BCtx, Username string, Password string, Avatar string) (user *User) {
+func NewUser(ctx *xenon.Ctx, Username string, Password string, Avatar string) (user *User) {
 	model := m_user.User{
 		Username: Username,
 		Password: xenon.String2MD5(Password),
 		Avatar: Avatar,
 	}
-	Error := xenon.Error{}
-	_, Error.Inner = orm.NewOrm().Insert(&model)
-	Error.Business = xenon.NewBusinessError("account:create_fail", fmt.Sprintf("创建%suser失败", Username))
-	ctx.Errors = append(ctx.Errors, Error)
+	_, err := orm.NewOrm().Insert(&model)
+	xenon.RaiseError(ctx, err)
 	return InitUserFromModel(&model)
 }

@@ -1,16 +1,12 @@
 package main
 
 import (
-	"github.com/cisordeng/beego"
+	"github.com/cisordeng/beego/xenon"
 
 	_ "gravity/models"
-	_ "gravity/routers"
+	_ "gravity/rest"
 )
 
 func main() {
-	if beego.BConfig.RunMode == "dev" {
-		beego.BConfig.WebConfig.DirectoryIndex = true
-		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
-	}
-	beego.Run()
+	xenon.Run()
 }

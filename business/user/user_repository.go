@@ -6,12 +6,10 @@ import (
 	m_user "gravity/models/account"
 )
 
-func GetUserByName(ctx *xenon.BCtx, Username string) (user *User)  {
+func GetUserByName(ctx *xenon.Ctx, Username string) (user *User)  {
 	model := m_user.User{}
-	Error := xenon.Error{}
-	Error.Inner = orm.NewOrm().QueryTable("user_user").Filter("username", Username).One(&model)
-	Error.Business = xenon.NewBusinessError("raise:account:not_exits", "用户不存在")
-	ctx.Errors = append(ctx.Errors, Error)
+	err := orm.NewOrm().QueryTable("user_user").Filter("username", Username).One(&model)
+	xenon.RaiseError(ctx, err, xenon.NewBusinessError("raise:account:not_exits", "用户不存在"))
 	user = InitUserFromModel(&model)
 	return user
 }
