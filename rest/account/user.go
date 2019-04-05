@@ -2,7 +2,7 @@ package account
 
 import (
 	"github.com/cisordeng/beego/xenon"
-	b_user "gravity/business/user"
+	bUser "gravity/business/account"
 )
 
 type User struct {
@@ -14,7 +14,7 @@ func init () {
 }
 
 func (this *User) Resource() string {
-	return "account.account"
+	return "account.user"
 }
 
 func (this *User) Params() map[string][]string {
@@ -35,8 +35,8 @@ func (this *User) Get() {
 
 	bCtx := this.GetBusinessContext()
 
-	article := b_user.GetUserByName(bCtx, Username)
-	data := b_user.EncodeUser(article)
+	article := bUser.GetUserByName(bCtx, Username)
+	data := bUser.EncodeUser(article)
 	this.ReturnJSON(data)
 }
 
@@ -47,7 +47,7 @@ func (this *User) Put() {
 
 	bCtx := this.GetBusinessContext()
 
-	user := b_user.NewUser(bCtx, Username, Password, Avatar)
-	data := b_user.EncodeUser(user)
+	user := bUser.NewUser(bCtx, Username, Password, Avatar)
+	data := bUser.EncodeUser(user)
 	this.ReturnJSON(data)
 }

@@ -1,10 +1,13 @@
-package user
+package account
 
 import (
+	"time"
+
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
+
 	mUser "gravity/model/account"
-	"time"
+
 )
 
 type User struct {
