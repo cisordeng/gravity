@@ -374,18 +374,20 @@ func (t *dbTables) getCondSQL(cond *Condition, sub bool, tz *time.Location) (whe
 
 			var operSQL string
 			var args []interface{}
+			var empty bool
 			if p.isRaw {
 				operSQL = p.sql
 			} else {
-				operSQL, args = t.base.GenerateOperatorSQL(mi, fi, operator, p.args, tz)
+				operSQL, args, empty = t.base.GenerateOperatorSQL(mi, fi, operator, p.args, tz)
 			}
-
 			leftCol := fmt.Sprintf("%s.%s%s%s", index, Q, fi.column, Q)
+
 			t.base.GenerateOperatorLeftCol(fi, operator, &leftCol)
 
-			where += fmt.Sprintf("%s %s ", leftCol, operSQL)
-			params = append(params, args...)
-
+			if !empty {
+				where += fmt.Sprintf("%s %s ", leftCol, operSQL)
+				params = append(params, args...)
+			}
 		}
 	}
 
