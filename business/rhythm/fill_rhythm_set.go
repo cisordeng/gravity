@@ -3,8 +3,6 @@ package rhythm
 import (
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
-	"sort"
-
 	mRhythm "nature/model/rhythm"
 )
 
@@ -21,9 +19,11 @@ func Fill(ctx *xenon.Ctx, rhythmSets []*RhythmSet, option xenon.FillOption) {
 func fillRhythm(ctx *xenon.Ctx, rhythmSets []*RhythmSet, ids []int) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&mRhythm.RhythmSetRhythm{})
-	qs.Filter(xenon.Map{
+	qs = qs.Filter(xenon.Map{
 		"rhythm_set_id__in": ids,
 	})
+
+	qs = qs.OrderBy("-index")
 
 	var models []*mRhythm.RhythmSetRhythm
 	_, err := qs.All(&models)
@@ -49,9 +49,6 @@ func fillRhythm(ctx *xenon.Ctx, rhythmSets []*RhythmSet, ids []int) {
 		for _, rhythmId := range id2rhythmIds[rhythmSet.Id] {
 			rhythms = append(rhythms, rhythmId2rhythm[rhythmId])
 		}
-		sort.Slice(rhythms, func(i int, j int) bool {
-			return rhythms[i].Id < rhythms[j].Id
-		})
 		rhythmSet.Rhythms = rhythms
 	}
 }

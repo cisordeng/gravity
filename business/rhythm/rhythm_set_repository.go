@@ -33,7 +33,7 @@ func GetRhythmSets(ctx *xenon.Ctx, filters xenon.Map, orderExprs ...string ) []*
 func GetRhythmSet(ctx *xenon.Ctx, id int) *RhythmSet {
 	rhythmSets := GetRhythmSets(ctx, xenon.Map{
 		"id": id,
-	}, "-id")
+	}, "-index")
 	if len(rhythmSets) > 0 {
 		return rhythmSets[0]
 	} else {

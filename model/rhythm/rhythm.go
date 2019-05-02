@@ -14,6 +14,8 @@ type RhythmSet struct { // 歌单
 	Avatar string
 	PlayedCount int `orm:"default(0)"`
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)"`
+
+	Index int
 }
 
 func (o *RhythmSet) TableName() string {
@@ -25,6 +27,8 @@ type RhythmSetRhythm struct { // 歌单包含的单歌
 	RhythmSetId int
 	RhythmId int
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)"`
+
+	Index int
 }
 
 func (o *RhythmSetRhythm) TableName() string {

@@ -25,7 +25,7 @@ func (this *RhythmSets) Params() map[string][]string {
 
 func (this *RhythmSets) Get() {
 	bCtx := this.GetBusinessContext()
-	rhythmSets := bRhythm.GetRhythmSets(bCtx, xenon.Map{}, "-id")
+	rhythmSets := bRhythm.GetRhythmSets(bCtx, xenon.Map{}, "-index")
 	bRhythm.Fill(bCtx, rhythmSets, xenon.FillOption{
 		"with_rhythm": true,
 	})
