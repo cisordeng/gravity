@@ -22,5 +22,6 @@ func Run() {
 		beego.BConfig.WebConfig.DirectoryIndex = false
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
+	beego.BConfig.RecoverFunc = RecoverPanic
 	beego.Run()
 }

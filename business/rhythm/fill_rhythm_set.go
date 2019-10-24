@@ -7,6 +7,9 @@ import (
 )
 
 func Fill(ctx *xenon.Ctx, rhythmSets []*RhythmSet, option xenon.FillOption) {
+	if len(rhythmSets) == 0 || rhythmSets[0] == nil {
+		return
+	}
 	ids := make([]int, 0)
 	for _, rhythmSet := range rhythmSets {
 		ids = append(ids, rhythmSet.Id)

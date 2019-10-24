@@ -5,6 +5,9 @@ import (
 )
 
 func EncodeRhythmSet(rhythmSet *RhythmSet) xenon.Map {
+	if rhythmSet == nil {
+		return nil
+	}
 	mapRhythms := make([]xenon.Map, 0)
 	if rhythmSet.Rhythms != nil {
 		mapRhythms = EncodeManyRhythm(rhythmSet.Rhythms)
