@@ -34,7 +34,5 @@ func (this *RhythmSet) Get() {
 		"with_rhythm": true,
 	})
 	data := bRhythm.EncodeRhythmSet(rhythmSet)
-	this.ReturnJSON(xenon.Map{
-		"rhythm_set": data,
-	})
+	this.ReturnJSON(data)
 }
