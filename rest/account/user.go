@@ -31,23 +31,19 @@ func (this *User) Params() map[string][]string {
 }
 
 func (this *User) Get() {
-	Username := this.GetString("username", "")
+	username := this.GetString("username", "")
 
-	bCtx := this.GetBusinessContext()
-
-	article := bUser.GetUserByName(bCtx, Username)
-	data := bUser.EncodeUser(article)
+	user := bUser.GetUserByName(username)
+	data := bUser.EncodeUser(user)
 	this.ReturnJSON(data)
 }
 
 func (this *User) Put() {
-	Username := this.GetString("username", "")
-	Password := this.GetString("password", "")
-	Avatar := this.GetString("avatar", "")
+	username := this.GetString("username", "")
+	password := this.GetString("password", "")
+	avatar := this.GetString("avatar", "")
 
-	bCtx := this.GetBusinessContext()
-
-	user := bUser.NewUser(bCtx, Username, Password, Avatar)
+	user := bUser.NewUser(username, password, avatar)
 	data := bUser.EncodeUser(user)
 	this.ReturnJSON(data)
 }

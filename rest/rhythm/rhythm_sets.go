@@ -24,11 +24,7 @@ func (this *RhythmSets) Params() map[string][]string {
 }
 
 func (this *RhythmSets) Get() {
-	bCtx := this.GetBusinessContext()
-	rhythmSets := bRhythm.GetRhythmSets(bCtx, xenon.Map{}, "-index")
-	bRhythm.Fill(bCtx, rhythmSets, xenon.FillOption{
-		"with_rhythm": true,
-	})
+	rhythmSets := bRhythm.GetRhythmSets(xenon.Map{}, "-index")
 	data := bRhythm.EncodeManyRhythmSet(rhythmSets)
 	this.ReturnJSON(xenon.Map{
 		"rhythm_sets": data,

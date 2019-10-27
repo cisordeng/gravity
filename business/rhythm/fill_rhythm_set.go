@@ -6,7 +6,7 @@ import (
 	mRhythm "nature/model/rhythm"
 )
 
-func Fill(ctx *xenon.Ctx, rhythmSets []*RhythmSet, option xenon.FillOption) {
+func Fill(rhythmSets []*RhythmSet, option xenon.FillOption) {
 	if len(rhythmSets) == 0 || rhythmSets[0] == nil {
 		return
 	}
@@ -15,11 +15,11 @@ func Fill(ctx *xenon.Ctx, rhythmSets []*RhythmSet, option xenon.FillOption) {
 		ids = append(ids, rhythmSet.Id)
 	}
 	if enableOption, ok := option["with_rhythm"]; ok && enableOption {
-		fillRhythm(ctx, rhythmSets, ids)
+		fillRhythm(rhythmSets, ids)
 	}
 }
 
-func fillRhythm(ctx *xenon.Ctx, rhythmSets []*RhythmSet, ids []int) {
+func fillRhythm(rhythmSets []*RhythmSet, ids []int) {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&mRhythm.RhythmSetRhythm{})
 	qs = qs.Filter(xenon.Map{
@@ -30,7 +30,7 @@ func fillRhythm(ctx *xenon.Ctx, rhythmSets []*RhythmSet, ids []int) {
 
 	var models []*mRhythm.RhythmSetRhythm
 	_, err := qs.All(&models)
-	xenon.RaiseError(ctx, err)
+	xenon.PanicNotNilError(err)
 
 	rhythmIds := make([]int, 0)
 	id2rhythmIds := make(map[int][]int, 0)
@@ -40,7 +40,7 @@ func fillRhythm(ctx *xenon.Ctx, rhythmSets []*RhythmSet, ids []int) {
 	}
 
 	rhythmId2rhythm := make(map[int]*Rhythm, 0)
-	rhythms := GetRhythms(ctx, xenon.Map{
+	rhythms := GetRhythms(xenon.Map{
 		"id__in": rhythmIds,
 	})
 	for _, rhythm := range rhythms {

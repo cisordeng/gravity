@@ -2,7 +2,6 @@ package xenon
 
 import (
 	"fmt"
-	"net/http"
 	"strings"
 
 	"github.com/cisordeng/beego"
@@ -15,12 +14,6 @@ type FillOption = map[string]bool
 
 type RestResource struct {
 	beego.Controller
-	bCtx Ctx
-}
-
-type Ctx struct {
-	Req    *http.Request
-	Errors []Error
 }
 
 type RestResourceInterface interface {
@@ -50,7 +43,7 @@ func (r *RestResource) CheckParams() {
 			actualParams := r.Input()
 			for _, param := range params {
 				if _, ok := actualParams[param]; !ok {
-					panic(NewBusinessError("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param)))
+					RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
 				}
 			}
 		}
@@ -58,12 +51,7 @@ func (r *RestResource) CheckParams() {
 }
 
 func (r *RestResource) Prepare() {
-	r.bCtx.Req = r.Ctx.Input.Context.Request
 	r.CheckParams()
-}
-
-func (r *RestResource) GetBusinessContext() *Ctx {
-	return &r.bCtx
 }
 
 func RegisterResources() {

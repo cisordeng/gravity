@@ -30,13 +30,13 @@ func InitUserFromModel(model *mUser.User) *User {
 	return instance
 }
 
-func NewUser(ctx *xenon.Ctx, Username string, Password string, Avatar string) (user *User) {
+func NewUser(username string, password string, avatar string) (user *User) {
 	model := mUser.User{
-		Username: Username,
-		Password: xenon.String2MD5(Password),
-		Avatar: Avatar,
+		Username: username,
+		Password: xenon.String2MD5(password),
+		Avatar: avatar,
 	}
 	_, err := orm.NewOrm().Insert(&model)
-	xenon.RaiseError(ctx, err)
+	xenon.PanicNotNilError(err)
 	return InitUserFromModel(&model)
 }

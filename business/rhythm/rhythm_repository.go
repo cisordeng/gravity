@@ -7,7 +7,7 @@ import (
 	mRhythm "nature/model/rhythm"
 )
 
-func GetRhythms(ctx *xenon.Ctx, filters xenon.Map, orderExprs ...string ) []*Rhythm {
+func GetRhythms(filters xenon.Map, orderExprs ...string ) []*Rhythm {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&mRhythm.Rhythm{})
 
@@ -20,7 +20,7 @@ func GetRhythms(ctx *xenon.Ctx, filters xenon.Map, orderExprs ...string ) []*Rhy
 	}
 
 	_, err := qs.All(&models)
-	xenon.RaiseError(ctx, err)
+	xenon.PanicNotNilError(err)
 
 
 	rhythms := make([]*Rhythm, 0)
@@ -30,13 +30,14 @@ func GetRhythms(ctx *xenon.Ctx, filters xenon.Map, orderExprs ...string ) []*Rhy
 	return rhythms
 }
 
-func GetRhythm(ctx *xenon.Ctx, id int) *Rhythm {
-	rhythms := GetRhythms(ctx, xenon.Map{
+func GetRhythm(id int) *Rhythm {
+	rhythms := GetRhythms(xenon.Map{
 		"id": id,
-	}, "-id")
+	}, "-index")
 	if len(rhythms) > 0 {
 		return rhythms[0]
 	} else {
+		xenon.RaiseException("raise:rhythm:not_exits", "歌曲不存在")
 		return nil
 	}
 }

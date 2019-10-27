@@ -1,29 +1,35 @@
 package xenon
 
-type Error struct {
-	Business BusinessError
-	Inner    error
-}
+import "errors"
 
-type BusinessError struct {
+type Error struct {
+	InnerErr error
 	ErrCode string
 	ErrMsg  string
 }
 
-func NewBusinessError(ErrCode string, ErrMsg string) BusinessError {
-	return BusinessError{
-		ErrCode: ErrCode,
-		ErrMsg:  ErrMsg,
+func depictError(err error, errStr []string) Error {
+	errCode := "internal error"
+	errMsg := "内部错误"
+	if len(errStr) > 0 {
+		errCode = errStr[0]
+	}
+	if len(errStr) > 1 {
+		errMsg = errStr[1]
+	}
+	return Error{
+		ErrCode: errCode,
+		ErrMsg:	errMsg,
+		InnerErr: err,
 	}
 }
 
-func RaiseError(ctx *Ctx, err error, businessError ...BusinessError) {
-	business := NewBusinessError("", "")
-	if len(businessError) > 0 {
-		business = businessError[0]
+func RaiseException(errStr ...string) {
+	panic(depictError(errors.New("raise exception"),  errStr))
+}
+
+func PanicNotNilError(err error, errStr ...string) {
+	if err != nil {
+		panic(depictError(err,  errStr))
 	}
-	ctx.Errors = append(ctx.Errors, Error{
-		Business: business,
-		Inner:    err,
-	})
 }
