@@ -18,7 +18,7 @@ func GetOneRhythmSet(filters xenon.Map) *RhythmSet {
 
 	err := qs.One(&model)
 	xenon.PanicNotNilError(err, "raise:rhythm_set:not_exits", "歌单不存在")
-	return nil
+	return InitRhythmSetFromModel(&model)
 }
 
 func GetRhythmSets(filters xenon.Map, orderExprs ...string ) []*RhythmSet {

@@ -18,7 +18,7 @@ type RhythmSet struct { // 歌单
 	Index int
 }
 
-func (o *RhythmSet) TableName() string {
+func (this *RhythmSet) TableName() string {
 	return "rhythm_rhythm_set"
 }
 
@@ -31,7 +31,7 @@ type RhythmSetRhythm struct { // 歌单包含的单歌
 	Index int
 }
 
-func (o *RhythmSetRhythm) TableName() string {
+func (this *RhythmSetRhythm) TableName() string {
 	return "rhythm_rhythm_set_rhythm"
 }
 
@@ -49,7 +49,7 @@ type Rhythm struct { // 单歌
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
-func (o *Rhythm) TableName() string {
+func (this *Rhythm) TableName() string {
 	return "rhythm_rhythm"
 }
 
@@ -63,7 +63,7 @@ type RhythmListen struct { // 听歌记录
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
-func (o *RhythmListen) TableName() string {
+func (this *RhythmListen) TableName() string {
 	return "rhythm_rhythm_listen"
 }
 

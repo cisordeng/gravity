@@ -13,7 +13,7 @@ type User struct {
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
-func (o *User) TableName() string {
+func (this *User) TableName() string {
 	return "account_user"
 }
 

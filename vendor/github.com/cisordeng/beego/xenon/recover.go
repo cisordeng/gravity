@@ -39,7 +39,7 @@ func RecoverPanic(ctx *context.Context) {
 				"innerErrMsg": innerErrMsg,
 			}
 		} else {
-			innerErrMsg = fmt.Sprintf("%s", e) + ";" + strings.Join(msg, ";")
+			innerErrMsg = fmt.Sprintf("%s", err) + ";" + strings.Join(msg, ";")
 			resp = Map{
 				"code":        531,
 				"data":        "",
