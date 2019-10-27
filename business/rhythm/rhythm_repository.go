@@ -7,6 +7,20 @@ import (
 	mRhythm "nature/model/rhythm"
 )
 
+func GetOneRhythm(filters xenon.Map) *Rhythm {
+	o := orm.NewOrm()
+	qs := o.QueryTable(&mRhythm.Rhythm{})
+
+	var model mRhythm.Rhythm
+	if len(filters) > 0 {
+		qs = qs.Filter(filters)
+	}
+
+	err := qs.One(&model)
+	xenon.PanicNotNilError(err, "raise:rhythm:not_exits", "歌曲不存在")
+	return nil
+}
+
 func GetRhythms(filters xenon.Map, orderExprs ...string ) []*Rhythm {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&mRhythm.Rhythm{})
@@ -31,13 +45,7 @@ func GetRhythms(filters xenon.Map, orderExprs ...string ) []*Rhythm {
 }
 
 func GetRhythm(id int) *Rhythm {
-	rhythms := GetRhythms(xenon.Map{
+	return GetOneRhythm(xenon.Map{
 		"id": id,
-	}, "-index")
-	if len(rhythms) > 0 {
-		return rhythms[0]
-	} else {
-		xenon.RaiseException("raise:rhythm:not_exits", "歌曲不存在")
-		return nil
-	}
+	})
 }
