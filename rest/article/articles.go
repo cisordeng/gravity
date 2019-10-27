@@ -25,7 +25,7 @@ func (this *Articles) Params() map[string][]string {
 }
 
 func (this *Articles) Get() {
-	rhythmSets := bArticle.GetArticles(xenon.Map{}, "-id")
+	rhythmSets := bArticle.GetArticles(xenon.Map{}, "-created_at")
 	data := bArticle.EncodeManyArticle(rhythmSets)
 	this.ReturnJSON(xenon.Map{
 		"articles": data,
