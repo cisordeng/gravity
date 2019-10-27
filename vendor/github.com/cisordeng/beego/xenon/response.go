@@ -5,7 +5,7 @@ type Response struct {
 	Data        interface{} `json:"data"`
 	ErrCode     string      `json:"errCode"`
 	ErrMsg      string      `json:"errMsg"`
-	InnerErrMsg []string    `json:"innerErrMsg"`
+	InnerErrMsg string    	`json:"innerErrMsg"`
 }
 
 func (r *RestResource) MakeResponse(data Map) *Response {
@@ -14,7 +14,7 @@ func (r *RestResource) MakeResponse(data Map) *Response {
 		data,
 		"",
 		"",
-		[]string{},
+		"",
 	}
 	return response
 }
