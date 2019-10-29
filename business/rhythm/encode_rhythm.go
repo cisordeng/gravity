@@ -38,6 +38,8 @@ func EncodeManyRhythm(rhythms []*Rhythm) []xenon.Map {
 
 func getRedirectUrl(url string) string {
 	resp, err := http.Head(url)
-	xenon.PanicNotNilError(err)
+	if err != nil {
+		return ""
+	}
 	return resp.Request.URL.String()
 }
