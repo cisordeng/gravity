@@ -2,7 +2,9 @@ package xenon
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/cisordeng/beego"
 )
@@ -34,6 +36,35 @@ func (r *RestResource) Params() map[string][]string {
 	return nil
 }
 
+func (r *RestResource) CheckValidSign() {
+	var signSecret = beego.AppConfig.String("api::signSecret")
+	var signEffectiveSeconds, err = strconv.ParseInt(beego.AppConfig.String("api::signEffectiveSeconds"), 10, 64)
+	PanicNotNilError(err)
+
+	params := []string{"sign", "timestamp"}
+	actualParams := r.Input()
+	for _, param := range params {
+		if _, ok := actualParams[param]; !ok {
+			RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
+		}
+	}
+
+	sign := actualParams.Get("sign")
+	timestamp, err := strconv.ParseInt(actualParams.Get("timestamp"), 10, 64)
+	PanicNotNilError(err, "rest:timestamp error", fmt.Sprintf("rest:timestamp error [%d]", timestamp))
+
+	actualParams.Del("sign")
+	unencryptedStr := signSecret + actualParams.Encode()
+	t := time.Unix(timestamp, 0)
+	if time.Now().Before(t) || time.Now().Sub(t) > time.Duration(signEffectiveSeconds * 1000000000) { // 签名有效时间15s
+		RaiseException("rest:request expired", fmt.Sprintf("at [%s] request expired", sign))
+	} else {
+		if strings.ToLower(String2MD5(unencryptedStr)) != sign {
+			RaiseException("rest:invalid sign", fmt.Sprintf("[%s] is invalid sign", sign))
+		}
+	}
+}
+
 func (r *RestResource) CheckParams() {
 	method := r.Ctx.Input.Method()
 	app := r.AppController.(RestResourceInterface)
@@ -51,6 +82,7 @@ func (r *RestResource) CheckParams() {
 }
 
 func (r *RestResource) Prepare() {
+	r.CheckValidSign()
 	r.CheckParams()
 }
 
