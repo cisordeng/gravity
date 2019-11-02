@@ -27,7 +27,7 @@ func (this *Article) Params() map[string][]string {
 			"title",
 			"content",
 		},
-		"POSY": []string{
+		"POST": []string{
 			"id",
 			"title",
 			"content",

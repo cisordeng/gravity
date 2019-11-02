@@ -5,7 +5,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"encoding/json"
 
 	"github.com/cisordeng/beego"
 )
@@ -44,14 +43,6 @@ func (r *RestResource) CheckValidSign() {
 
 	params := []string{"sign", "timestamp"}
 	actualParams := r.Input()
-	if len(r.Ctx.Input.RequestBody) > 0 {
-		body := make(map[string]string, 0)
-		err = json.Unmarshal(r.Ctx.Input.RequestBody, &body)
-		PanicNotNilError(err)
-		for k, v := range body {
-			actualParams[k] = []string{v}
-		}
-	}
 	for _, param := range params {
 		if _, ok := actualParams[param]; !ok {
 			RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
