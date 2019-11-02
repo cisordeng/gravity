@@ -26,7 +26,10 @@ func (this *Article) Update(title string, content string) {
 	}
 
 	o := orm.NewOrm()
-	_, err := o.QueryTable(&mArticle.Article{}).Update(params)
+	qs := o.QueryTable(&mArticle.Article{})
+	_, err := qs.Filter(xenon.Map{
+		"id": this.Id,
+	}).Update(params)
 	xenon.PanicNotNilError(err, "business:update failed", "update failed")
 	this.Title = title
 	this.Content = content

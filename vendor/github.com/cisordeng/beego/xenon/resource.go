@@ -63,6 +63,7 @@ func (r *RestResource) CheckValidSign() {
 			RaiseException("rest:invalid sign", fmt.Sprintf("[%s] is invalid sign", sign))
 		}
 	}
+	actualParams.Del("timestamp")
 }
 
 func (r *RestResource) CheckParams() {
