@@ -23,6 +23,15 @@ func (this *Article) Params() map[string][]string {
 		"GET":  []string{
 			"id",
 		},
+		"PUT": []string{
+			"title",
+			"content",
+		},
+		"POSY": []string{
+			"id",
+			"title",
+			"content",
+		},
 	}
 }
 
@@ -30,6 +39,26 @@ func (this *Article) Get() {
 	id, _ := this.GetInt("id", 0)
 
 	article := bArticle.GetArticleById(id)
+	data := bArticle.EncodeArticle(article)
+	this.ReturnJSON(data)
+}
+
+func (this *Article) Put() {
+	title := this.GetString("title", "")
+	content := this.GetString("content", "")
+
+	article := bArticle.NewArticle(title, content)
+	data := bArticle.EncodeArticle(article)
+	this.ReturnJSON(data)
+}
+
+func (this *Article) Post() {
+	id, _ := this.GetInt("id", 0)
+	title := this.GetString("title")
+	content := this.GetString("content")
+
+	article := bArticle.GetArticleById(id)
+	article.Update(title, content)
 	data := bArticle.EncodeArticle(article)
 	this.ReturnJSON(data)
 }

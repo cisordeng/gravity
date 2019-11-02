@@ -19,6 +19,19 @@ type Article struct {
 func init() {
 }
 
+func (this *Article) Update(title string, content string) {
+	params := xenon.Map{
+		"title": title,
+		"content": content,
+	}
+
+	o := orm.NewOrm()
+	_, err := o.QueryTable(&mArticle.Article{}).Update(params)
+	xenon.PanicNotNilError(err, "business:update failed", "update failed")
+	this.Title = title
+	this.Content = content
+}
+
 func InitArticleFromModel(model *mArticle.Article) *Article {
 	instance := new(Article)
 	instance.Id = model.Id
@@ -29,9 +42,10 @@ func InitArticleFromModel(model *mArticle.Article) *Article {
 	return instance
 }
 
-func NewArticle() (article *Article) {
+func NewArticle(title string, content string) (article *Article) {
 	model := mArticle.Article{
-
+		Title: title,
+		Content: content,
 	}
 	_, err := orm.NewOrm().Insert(&model)
 	xenon.PanicNotNilError(err)
