@@ -1,8 +1,10 @@
 package article
 
 import (
+	"github.com/cisordeng/beego"
 	"github.com/cisordeng/beego/xenon"
 
+	bUser "nature/business/account"
 	bArticle "nature/business/article"
 )
 
@@ -24,10 +26,12 @@ func (this *Article) Params() map[string][]string {
 			"id",
 		},
 		"PUT": []string{
+			"token",
 			"title",
 			"content",
 		},
 		"POST": []string{
+			"token",
 			"id",
 			"title",
 			"content",

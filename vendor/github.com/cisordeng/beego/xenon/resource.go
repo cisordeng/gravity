@@ -1,6 +1,7 @@
 package xenon
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -36,7 +37,24 @@ func (r *RestResource) Params() map[string][]string {
 	return nil
 }
 
-func (r *RestResource) CheckValidSign() {
+
+func (r *RestResource) GetUserFromToken(user interface{}) {
+	actualParams := r.Input()
+	token := actualParams.Get("token")
+	if token != "" {
+		commonKey := beego.AppConfig.String("api::aesCommonKey")
+		decodedToken, err := DecodeAesWithCommonKey(token, commonKey)
+		PanicNotNilError(err, "rest:invalid token", fmt.Sprintf("[%s] is invalid token", token))
+		err = json.Unmarshal([]byte(decodedToken), user)
+		PanicNotNilError(err, "rest:invalid token", fmt.Sprintf("[%s] is invalid token", token))
+	}
+}
+
+func (r *RestResource) checkValidSign() {
+	var enableSign, _ = beego.AppConfig.Bool("api::enableSign")
+	if !enableSign {
+		return
+	}
 	var signSecret = beego.AppConfig.String("api::signSecret")
 	var signEffectiveSeconds, err = strconv.ParseInt(beego.AppConfig.String("api::signEffectiveSeconds"), 10, 64)
 	PanicNotNilError(err)
@@ -59,14 +77,14 @@ func (r *RestResource) CheckValidSign() {
 	if time.Now().Before(t) || time.Now().Sub(t) > time.Duration(signEffectiveSeconds * 1000000000) { // 签名有效时间15s
 		RaiseException("rest:request expired", fmt.Sprintf("at [%s] request expired", sign))
 	} else {
-		if strings.ToLower(String2MD5(unencryptedStr)) != sign {
+		if strings.ToLower(EncodeMD5(unencryptedStr)) != sign {
 			RaiseException("rest:invalid sign", fmt.Sprintf("[%s] is invalid sign", sign))
 		}
 	}
 	actualParams.Del("timestamp")
 }
 
-func (r *RestResource) CheckParams() {
+func (r *RestResource) checkParams() {
 	method := r.Ctx.Input.Method()
 	app := r.AppController.(RestResourceInterface)
 	method2params := app.Params()
@@ -82,9 +100,26 @@ func (r *RestResource) CheckParams() {
 	}
 }
 
+func (r *RestResource) checkValidToken() {
+	actualParams := r.Input()
+	token := actualParams.Get("token")
+	user := make(map[string]interface{}, 0)
+	if token != "" {
+		commonKey := beego.AppConfig.String("api::aesCommonKey")
+		decodedToken, err := DecodeAesWithCommonKey(token, commonKey)
+		PanicNotNilError(err, "rest:invalid token", fmt.Sprintf("[%s] is invalid token", token))
+		err = json.Unmarshal([]byte(decodedToken), &user)
+		PanicNotNilError(err, "rest:invalid token", fmt.Sprintf("[%s] is invalid token", token))
+		if id, ok := user["id"].(float64); !ok || id <= 0 {
+			RaiseException("rest:invalid token", fmt.Sprintf("[%s] is invalid token", token))
+		}
+	}
+}
+
 func (r *RestResource) Prepare() {
-	r.CheckValidSign()
-	r.CheckParams()
+	r.checkValidSign()
+	r.checkParams()
+	r.checkValidToken()
 }
 
 func RegisterResources() {

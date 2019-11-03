@@ -12,7 +12,8 @@ import (
 
 type User struct {
 	Id int
-	Username string
+	Name string
+	Password string
 	Avatar string
 	CreatedAt time.Time
 }
@@ -23,17 +24,18 @@ func init() {
 func InitUserFromModel(model *mUser.User) *User {
 	instance := new(User)
 	instance.Id = model.Id
-	instance.Username = model.Username
+	instance.Name = model.Name
+	instance.Password = model.Password
 	instance.Avatar = model.Avatar
 	instance.CreatedAt = model.CreatedAt
 
 	return instance
 }
 
-func NewUser(username string, password string, avatar string) (user *User) {
+func NewUser(name string, password string, avatar string) (user *User) {
 	model := mUser.User{
-		Username: username,
-		Password: xenon.String2MD5(password),
+		Name: name,
+		Password: xenon.EncodeMD5(password),
 		Avatar: avatar,
 	}
 	_, err := orm.NewOrm().Insert(&model)

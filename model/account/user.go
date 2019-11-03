@@ -7,7 +7,7 @@ import (
 
 type User struct {
 	Id int
-	Username string
+	Name string
 	Password string
 	Avatar string
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)"`
