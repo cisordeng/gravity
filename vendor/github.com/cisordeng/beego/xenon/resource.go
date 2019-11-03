@@ -50,6 +50,19 @@ func (r *RestResource) GetUserFromToken(user interface{}) {
 	}
 }
 
+func (r *RestResource) encodeURIComponent() string {
+	replaceMap := map[string]string{
+		"+": "%20",
+	}
+	temp1 := r.Input().Encode()
+	temp2 := ""
+	for key, value := range replaceMap {
+		temp2 = strings.Replace(temp1, key, value, -1)
+		temp1 = temp2
+	}
+	return temp1
+}
+
 func (r *RestResource) checkValidSign() {
 	var enableSign, _ = beego.AppConfig.Bool("api::enableSign")
 	if !enableSign {
@@ -72,7 +85,7 @@ func (r *RestResource) checkValidSign() {
 	PanicNotNilError(err, "rest:timestamp error", fmt.Sprintf("rest:timestamp error [%d]", timestamp))
 
 	actualParams.Del("sign")
-	unencryptedStr := signSecret + actualParams.Encode()
+	unencryptedStr := signSecret + r.encodeURIComponent()
 	t := time.Unix(timestamp, 0)
 	if time.Now().Before(t) || time.Now().Sub(t) > time.Duration(signEffectiveSeconds * 1000000000) { // 签名有效时间15s
 		RaiseException("rest:request expired", fmt.Sprintf("at [%s] request expired", sign))
