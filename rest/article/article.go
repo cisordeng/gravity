@@ -1,10 +1,8 @@
 package article
 
 import (
-	"github.com/cisordeng/beego"
 	"github.com/cisordeng/beego/xenon"
 
-	bUser "nature/business/account"
 	bArticle "nature/business/article"
 )
 
