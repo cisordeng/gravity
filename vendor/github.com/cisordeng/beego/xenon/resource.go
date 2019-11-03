@@ -53,6 +53,10 @@ func (r *RestResource) GetUserFromToken(user interface{}) {
 func (r *RestResource) encodeURIComponent() string {
 	replaceMap := map[string]string{
 		"+": "%20",
+		"%27": "'",
+		"%28": "(",
+		"%29": ")",
+		"%21": "!",
 	}
 	temp1 := r.Input().Encode()
 	temp2 := ""
@@ -60,6 +64,7 @@ func (r *RestResource) encodeURIComponent() string {
 		temp2 = strings.Replace(temp1, key, value, -1)
 		temp1 = temp2
 	}
+	beego.Info(temp1)
 	return temp1
 }
 
