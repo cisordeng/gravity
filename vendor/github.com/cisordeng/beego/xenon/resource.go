@@ -64,7 +64,6 @@ func (r *RestResource) encodeURIComponent() string {
 		temp2 = strings.Replace(temp1, key, value, -1)
 		temp1 = temp2
 	}
-	beego.Info(temp1)
 	return temp1
 }
 
