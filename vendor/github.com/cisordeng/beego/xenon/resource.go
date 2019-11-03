@@ -57,6 +57,7 @@ func (r *RestResource) encodeURIComponent() string {
 		"%28": "(",
 		"%29": ")",
 		"%21": "!",
+		"%2A": "*",
 	}
 	temp1 := r.Input().Encode()
 	temp2 := ""
