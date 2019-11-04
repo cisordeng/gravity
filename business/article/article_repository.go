@@ -44,6 +44,28 @@ func GetArticles(filters xenon.Map, orderExprs ...string ) []*Article {
 	return articles
 }
 
+func GetPagedArticles(page *xenon.Paginator, filters xenon.Map, orderExprs ...string ) ([]*Article, xenon.PageInfo) {
+	o := orm.NewOrm()
+	qs := o.QueryTable(&mArticle.Article{})
+
+	var models []*mArticle.Article
+	if len(filters) > 0 {
+		qs = qs.Filter(filters)
+	}
+	if len(orderExprs) > 0 {
+		qs = qs.OrderBy(orderExprs...)
+	}
+
+	pageInfo, err := xenon.Paginate(qs, page, &models)
+	xenon.PanicNotNilError(err)
+
+	articles := make([]*Article, 0)
+	for _, model := range models {
+		articles = append(articles, InitArticleFromModel(model))
+	}
+	return articles, pageInfo
+}
+
 func GetArticleById(id int) *Article {
 	return GetOneArticle(xenon.Map{
 		"id": id,

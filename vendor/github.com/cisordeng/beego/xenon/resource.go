@@ -50,6 +50,12 @@ func (r *RestResource) GetUserFromToken(user interface{}) {
 	}
 }
 
+func (r *RestResource) GetPage() *Paginator {
+	page, _ := r.GetInt("page", 1)
+	countPerPage, _ := r.GetInt("count_per_page", 10)
+	return NewPaginator(page, countPerPage)
+}
+
 func (r *RestResource) encodeURIComponent() string {
 	replaceMap := map[string]string{
 		"+": "%20",
