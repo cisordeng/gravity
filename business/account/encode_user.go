@@ -5,6 +5,9 @@ import (
 )
 
 func EncodeUser(user *User) xenon.Map {
+	if user == nil {
+		return nil
+	}
 	mapUser := xenon.Map{
 		"id": user.Id,
 		"name": user.Name,
