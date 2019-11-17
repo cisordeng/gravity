@@ -15,7 +15,7 @@ func Fill(resources []interface{}, restResource string) {
 	comments := GetComments(xenon.Map{
 		"resource_id__in": resourceIds,
 		"resource_type": restResource,
-	}, "-created_at")
+	})
 	FillComment(comments)
 
 	resourceId2comments := make(map[int][]*Comment)
