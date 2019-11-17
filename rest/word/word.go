@@ -40,6 +40,7 @@ func (this *Word) Get() {
 	id, _ := this.GetInt("id", 0)
 
 	word := bWord.GetWordById(id)
+	bWord.Fill([]*bWord.Word{ word })
 	data := bWord.EncodeWord(word)
 	this.ReturnJSON(data)
 }
@@ -51,6 +52,7 @@ func (this *Word) Put() {
 	this.GetUserFromToken(&user)
 
 	word := bWord.NewWord(user, content)
+	bWord.Fill([]*bWord.Word{ word })
 	data := bWord.EncodeWord(word)
 	this.ReturnJSON(data)
 }
@@ -61,6 +63,7 @@ func (this *Word) Post() {
 
 	word := bWord.GetWordById(id)
 	word.Update(content)
+	bWord.Fill([]*bWord.Word{ word })
 	data := bWord.EncodeWord(word)
 	this.ReturnJSON(data)
 }

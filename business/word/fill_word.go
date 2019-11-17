@@ -1,6 +1,8 @@
 package word
+
 import (
 	"github.com/cisordeng/beego/xenon"
+	"nature/business/comment"
 
 	"nature/business/account"
 )
@@ -11,6 +13,12 @@ func Fill(words []*Word) {
 	}
 
 	fillUser(words)
+
+	interfaceWords := make([]interface{}, 0)
+	for _, word := range words {
+		interfaceWords = append(interfaceWords, word)
+	}
+	comment.Fill(interfaceWords, "word.word")
 }
 
 

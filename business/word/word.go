@@ -7,6 +7,7 @@ import (
 	"github.com/cisordeng/beego/xenon"
 
 	"nature/business/account"
+	"nature/business/comment"
 	mWord "nature/model/word"
 )
 
@@ -17,6 +18,7 @@ type Word struct {
 	CreatedAt time.Time
 
 	User *account.User
+	Comments []*comment.Comment
 }
 
 func init() {
