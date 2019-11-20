@@ -58,7 +58,7 @@ func fillReplies(words []*Word) {
 	}
 
 	for _, word := range words {
-		if replies, ok := resourceId2replies[word.UserId]; ok {
+		if replies, ok := resourceId2replies[word.Id]; ok {
 			word.Replies = replies
 		}
 	}
