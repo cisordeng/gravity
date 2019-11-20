@@ -48,6 +48,7 @@ func fillReplies(words []*Word) {
 
 	replies := dolphin.GetReplies(xenon.Map{
 		"resource_id__in": wordIds,
+		"resource_type": "word.word",
 	})
 
 
