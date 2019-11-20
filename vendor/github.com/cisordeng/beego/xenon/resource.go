@@ -56,6 +56,19 @@ func (r *RestResource) GetPage() *Paginator {
 	return NewPaginator(page, countPerPage)
 }
 
+func (r *RestResource) GetFilters() Map {
+	strFilters := r.GetString("filters", "{}")
+	filters := Map{}
+	err := json.Unmarshal([]byte(strFilters), &filters)
+	PanicNotNilError(err)
+	return filters
+}
+
+func (r *RestResource) GetOrders() []string {
+	orders := r.GetStrings("orders", []string{})
+	return orders
+}
+
 func (r *RestResource) encodeURIComponent() string {
 	replaceMap := map[string]string{
 		"+": "%20",

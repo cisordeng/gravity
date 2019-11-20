@@ -1,8 +1,10 @@
 package word
+
 import (
 	"github.com/cisordeng/beego/xenon"
-	"nature/business/account"
-	"nature/business/comment"
+	"nature/common/dolphin"
+
+	"nature/common/leo"
 )
 
 func EncodeWord(word *Word) xenon.Map {
@@ -10,13 +12,13 @@ func EncodeWord(word *Word) xenon.Map {
 		return nil
 	}
 
-	user := account.EncodeUser(word.User)
-	comments := comment.EncodeManyComment(word.Comments)
+	user := leo.EncodeUser(word.User)
+	rReplies := dolphin.EncodeManyReply(word.Replies)
 
 	mapWord := xenon.Map{
 		"id": word.Id,
 		"user": user,
-		"comments": comments,
+		"replies": rReplies,
 		"content": word.Content,
 		"created_at": word.CreatedAt.Format("2006-01-02 15:04:05"),
 	}

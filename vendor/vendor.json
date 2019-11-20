@@ -5,80 +5,80 @@
 		{
 			"checksumSHA1": "1KbKoyPYab6mK4t61yiLxVbqPsU=",
 			"path": "github.com/cisordeng/beego",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "9pdnyWfshlEv040j2uhilvnK5hg=",
 			"path": "github.com/cisordeng/beego/config",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "R7MuoJM2dTFnlZlDLOQ8VwM30Kw=",
 			"path": "github.com/cisordeng/beego/context",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "NX8SmrfSBvH0zn0nPj79fFXiE1s=",
 			"path": "github.com/cisordeng/beego/context/param",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "9EOKJl3LCxuU/W9VwPZ2rRIh72Q=",
 			"path": "github.com/cisordeng/beego/grace",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "4TeZ3ZNhb3U59CM4Qhc9bMehsfY=",
 			"path": "github.com/cisordeng/beego/logs",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "oAvjhyRQyTYW5MY17bo0iNoOBb4=",
 			"path": "github.com/cisordeng/beego/orm",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "JqLkyfNRc+1TrD6O+D3iISMVzfU=",
 			"path": "github.com/cisordeng/beego/plugins/cors",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "Lu94k+74Ah890ReFx5d6+DqfcGk=",
 			"path": "github.com/cisordeng/beego/session",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "/5cQImcRE6K7wZaFEpZNNOl5D5U=",
 			"path": "github.com/cisordeng/beego/testdata",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "2MTLSHWyRyWX3+zZw2QejMNvhS4=",
 			"path": "github.com/cisordeng/beego/toolbox",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
 			"checksumSHA1": "4K+jAQTxo7KgVKTikQKpZoyw+bY=",
 			"path": "github.com/cisordeng/beego/utils",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		},
 		{
-			"checksumSHA1": "OV57nPDqmWJH/tlSIRBKjDfQlc4=",
+			"checksumSHA1": "EL853rroMZq0x0W1ah+rAZetVm8=",
 			"path": "github.com/cisordeng/beego/xenon",
-			"revision": "c47f1fd91679ba092a0e0363b9e1f2e4eec2a601",
-			"revisionTime": "2019-11-04T15:40:05Z"
+			"revision": "8694d2664f54d9cabfa183e48d879bf6d5ba950c",
+			"revisionTime": "2019-11-19T13:49:34Z"
 		}
 	],
 	"rootPath": "nature"

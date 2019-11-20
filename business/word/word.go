@@ -6,8 +6,8 @@ import (
 	"github.com/cisordeng/beego/orm"
 	"github.com/cisordeng/beego/xenon"
 
-	"nature/business/account"
-	"nature/business/comment"
+	"nature/common/dolphin"
+	"nature/common/leo"
 	mWord "nature/model/word"
 )
 
@@ -17,8 +17,8 @@ type Word struct {
 	Content string
 	CreatedAt time.Time
 
-	User *account.User
-	Comments []*comment.Comment
+	User *leo.User
+	Replies []*dolphin.Reply
 }
 
 func init() {
@@ -48,7 +48,7 @@ func InitWordFromModel(model *mWord.Word) *Word {
 	return instance
 }
 
-func NewWord(user account.User, content string) (word *Word) {
+func NewWord(user leo.User, content string) (word *Word) {
 	model := mWord.Word{
 		UserId: user.Id,
 		Content: content,

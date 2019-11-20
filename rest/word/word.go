@@ -3,7 +3,7 @@ package word
 import (
 	"github.com/cisordeng/beego/xenon"
 
-	bUser "nature/business/account"
+	"nature/common/leo"
 	bWord "nature/business/word"
 )
 
@@ -48,7 +48,7 @@ func (this *Word) Get() {
 func (this *Word) Put() {
 	content := this.GetString("content")
 
-	user := bUser.User{}
+	user := leo.User{}
 	this.GetUserFromToken(&user)
 
 	word := bWord.NewWord(user, content)
