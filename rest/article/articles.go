@@ -27,6 +27,7 @@ func (this *Articles) Params() map[string][]string {
 func (this *Articles) Get() {
 	page := this.GetPage()
 	articles, pageInfo := bArticle.GetPagedArticles(page, xenon.Map{}, "-created_at")
+	bArticle.Fill(articles)
 	data := bArticle.EncodeManyArticle(articles)
 	this.ReturnJSON(xenon.Map{
 		"articles": data,

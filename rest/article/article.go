@@ -2,6 +2,7 @@ package article
 
 import (
 	"github.com/cisordeng/beego/xenon"
+	"nature/common/leo"
 
 	bArticle "nature/business/article"
 )
@@ -41,6 +42,7 @@ func (this *Article) Get() {
 	id, _ := this.GetInt("id", 0)
 
 	article := bArticle.GetArticleById(id)
+	bArticle.Fill([]*bArticle.Article{ article })
 	data := bArticle.EncodeArticle(article)
 	this.ReturnJSON(data)
 }
@@ -49,7 +51,11 @@ func (this *Article) Put() {
 	title := this.GetString("title", "")
 	content := this.GetString("content", "")
 
-	article := bArticle.NewArticle(title, content)
+	user := leo.User{}
+	this.GetUserFromToken(&user)
+
+	article := bArticle.NewArticle(user, title, content)
+	bArticle.Fill([]*bArticle.Article{ article })
 	data := bArticle.EncodeArticle(article)
 	this.ReturnJSON(data)
 }
@@ -61,6 +67,7 @@ func (this *Article) Post() {
 
 	article := bArticle.GetArticleById(id)
 	article.Update(title, content)
+	bArticle.Fill([]*bArticle.Article{ article })
 	data := bArticle.EncodeArticle(article)
 	this.ReturnJSON(data)
 }

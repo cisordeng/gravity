@@ -1,6 +1,10 @@
 package article
+
 import (
 	"github.com/cisordeng/beego/xenon"
+
+	"nature/common/dolphin"
+	"nature/common/leo"
 )
 
 func EncodeArticle(article *Article) xenon.Map {
@@ -8,8 +12,13 @@ func EncodeArticle(article *Article) xenon.Map {
 		return nil
 	}
 
+	user := leo.EncodeUser(article.User)
+	rReplies := dolphin.EncodeManyReply(article.Replies)
+
 	mapArticle := xenon.Map{
 		"id": article.Id,
+		"user": user,
+		"replies": rReplies,
 		"title": article.Title,
 		"content": article.Content,
 		"created_at": article.CreatedAt.Format("2006-01-02 15:04:05"),

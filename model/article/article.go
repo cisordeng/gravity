@@ -8,6 +8,7 @@ import (
 
 type Article struct {
 	Id int
+	UserId int
 	Title string
 	Content string `orm:"type(string-text)"`
 	CreatedAt time.Time `orm:"auto_now_add;type(datetime)"`
