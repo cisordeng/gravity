@@ -24,9 +24,11 @@ func (this *RhythmSets) Params() map[string][]string {
 }
 
 func (this *RhythmSets) Get() {
-	rhythmSets := bRhythm.GetRhythmSets(xenon.Map{}, "-index")
+	page := this.GetPage()
+	rhythmSets, pageInfo := bRhythm.GetPagedRhythmSets(page, xenon.Map{}, "-index")
 	data := bRhythm.EncodeManyRhythmSet(rhythmSets)
 	this.ReturnJSON(xenon.Map{
 		"rhythm_sets": data,
+		"page_info": pageInfo.ToMap(),
 	})
 }

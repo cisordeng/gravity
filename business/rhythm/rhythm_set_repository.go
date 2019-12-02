@@ -21,6 +21,28 @@ func GetOneRhythmSet(filters xenon.Map) *RhythmSet {
 	return InitRhythmSetFromModel(&model)
 }
 
+func GetPagedRhythmSets(page *xenon.Paginator, filters xenon.Map, orderExprs ...string ) ([]*RhythmSet, xenon.PageInfo) {
+	o := orm.NewOrm()
+	qs := o.QueryTable(&mRhythm.RhythmSet{})
+
+	var models []*mRhythm.RhythmSet
+	if len(filters) > 0 {
+		qs = qs.Filter(filters)
+	}
+	if len(orderExprs) > 0 {
+		qs = qs.OrderBy(orderExprs...)
+	}
+
+	pageInfo, err := xenon.Paginate(qs, page, &models)
+	xenon.PanicNotNilError(err)
+
+	rhythmSets := make([]*RhythmSet, 0)
+	for _, model := range models {
+		rhythmSets = append(rhythmSets, InitRhythmSetFromModel(model))
+	}
+	return rhythmSets, pageInfo
+}
+
 func GetRhythmSets(filters xenon.Map, orderExprs ...string ) []*RhythmSet {
 	o := orm.NewOrm()
 	qs := o.QueryTable(&mRhythm.RhythmSet{})
