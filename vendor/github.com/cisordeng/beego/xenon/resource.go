@@ -50,6 +50,32 @@ func (r *RestResource) GetUserFromToken(user interface{}) {
 	}
 }
 
+func (r *RestResource) GetMap(key string) Map {
+	strM := r.GetString(key, "{}")
+	m := Map{}
+	err := json.Unmarshal([]byte(strM), &m)
+	PanicNotNilError(err, "type error", fmt.Sprintf("[%s] is not json", key))
+	return m
+}
+
+func (r *RestResource) GetSlice(key string) []interface{} {
+	strS := r.GetString(key, "")
+	s := make([]interface{}, 0)
+	if len(strS) == 0 {
+		return s
+	}
+	if strS[0] != '[' {
+		strs := strings.Split(r.GetString(key, ""), ",")
+		for _, str := range strs {
+			s = append(s, str)
+		}
+		return s
+	}
+	err := json.Unmarshal([]byte(strS), &s)
+	PanicNotNilError(err, "type error", fmt.Sprintf("[%s] is not slice", key))
+	return s
+}
+
 func (r *RestResource) GetPage() *Paginator {
 	page, _ := r.GetInt("page", 1)
 	countPerPage, _ := r.GetInt("count_per_page", 10)
@@ -57,10 +83,7 @@ func (r *RestResource) GetPage() *Paginator {
 }
 
 func (r *RestResource) GetFilters() Map {
-	strFilters := r.GetString("filters", "{}")
-	filters := Map{}
-	err := json.Unmarshal([]byte(strFilters), &filters)
-	PanicNotNilError(err)
+	filters := r.GetMap("filters")
 	return filters
 }
 
@@ -128,9 +151,20 @@ func (r *RestResource) checkParams() {
 	if method2params != nil {
 		if params, ok := method2params[method]; ok {
 			actualParams := r.Input()
-			for _, param := range params {
-				if _, ok := actualParams[param]; !ok {
-					RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
+			if r.Ctx.Input.IsUpload() {
+				multipartForm := r.Ctx.Request.MultipartForm
+				for _, param := range params {
+					if _, ok := multipartForm.Value[param]; !ok {
+						if _, ok := multipartForm.File[param]; !ok {
+							RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
+						}
+					}
+				}
+			} else {
+				for _, param := range params {
+					if _, ok := actualParams[param]; !ok {
+						RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
+					}
 				}
 			}
 		}
