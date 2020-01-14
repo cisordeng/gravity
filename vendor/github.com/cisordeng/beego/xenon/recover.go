@@ -1,16 +1,45 @@
 package xenon
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"runtime"
 
-	"github.com/cisordeng/beego/context"
+	"github.com/cisordeng/beego"
+	beegoContext "github.com/cisordeng/beego/context"
 	"github.com/cisordeng/beego/logs"
 )
 
-func RecoverPanic(ctx *context.Context) {
+func rollBackTx(ctx *beegoContext.Context) {
+	dbUsed, _ := beego.AppConfig.Bool("db::DB_USED")
+	if !dbUsed {
+		return
+	}
+	if ctx.Input.GetData("bContext") != nil {
+		if bCtx, ok := ctx.Input.GetData("bContext").(context.Context); ok {
+			o := GetOrmFromContext(bCtx)
+			if o != nil {
+				if ctx.Input.GetData("disableTx") != nil {
+					if disableTx, ok := ctx.Input.GetData("disableTx").(bool); ok {
+						if !disableTx {
+							err := o.Rollback()
+							beego.Warn("[ORM] rollback transaction")
+							if err != nil {
+								beego.Error(err)
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func RecoverPanic(ctx *beegoContext.Context) {
 	if err := recover(); err != nil {
+		// 回滚
+		rollBackTx(ctx)
 
 		logs.Critical("the request url is ", ctx.Input.URL())
 		logs.Error("panic: ", fmt.Sprintf("%s", err))

@@ -1,6 +1,7 @@
 package xenon
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strconv"
@@ -8,6 +9,7 @@ import (
 	"time"
 
 	"github.com/cisordeng/beego"
+	"github.com/cisordeng/beego/orm"
 )
 
 var Resources []RestResourceInterface
@@ -23,6 +25,7 @@ type RestResourceInterface interface {
 	beego.ControllerInterface
 	Resource() string
 	Params() map[string][]string
+	DisableTx() bool
 }
 
 func RegisterResource(resourceInterface RestResourceInterface) {
@@ -37,6 +40,13 @@ func (r *RestResource) Params() map[string][]string {
 	return nil
 }
 
+func (r *RestResource) DisableTx() bool {
+	if r.Ctx.Request.Method == "GET" {
+		return true
+	} else {
+		return false
+	}
+}
 
 func (r *RestResource) GetUserFromToken(user interface{}) {
 	actualParams := r.Input()
@@ -54,7 +64,7 @@ func (r *RestResource) GetMap(key string) Map {
 	strM := r.GetString(key, "{}")
 	m := Map{}
 	err := json.Unmarshal([]byte(strM), &m)
-	PanicNotNilError(err, "type error", fmt.Sprintf("[%s] is not json", key))
+	PanicNotNilError(err, "rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s](%s)", key, "map"))
 	return m
 }
 
@@ -72,7 +82,7 @@ func (r *RestResource) GetSlice(key string) []interface{} {
 		return s
 	}
 	err := json.Unmarshal([]byte(strS), &s)
-	PanicNotNilError(err, "type error", fmt.Sprintf("[%s] is not slice", key))
+	PanicNotNilError(err, "rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s](%s)", key, "slice"))
 	return s
 }
 
@@ -150,20 +160,52 @@ func (r *RestResource) checkParams() {
 	method2params := app.Params()
 	if method2params != nil {
 		if params, ok := method2params[method]; ok {
-			actualParams := r.Input()
-			if r.Ctx.Input.IsUpload() {
-				multipartForm := r.Ctx.Request.MultipartForm
-				for _, param := range params {
-					if _, ok := multipartForm.Value[param]; !ok {
-						if _, ok := multipartForm.File[param]; !ok {
-							RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
-						}
-					}
+			actualParams := make(map[string]interface{}, 0)
+			for k, v := range r.Input() {
+				actualParams[k] = v
+			}
+			if r.Ctx.Request.MultipartForm != nil {
+				for k, v := range r.Ctx.Request.MultipartForm.File {
+					actualParams[k] = v
 				}
-			} else {
-				for _, param := range params {
-					if _, ok := actualParams[param]; !ok {
-						RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", param))
+			}
+
+			for _, param := range params {
+				paramStrs := strings.Split(param, ":")
+				paramCode := paramStrs[0]
+				canMissParam := false
+				if paramCode[0] == '?' {
+					paramCode = paramCode[1:]
+					canMissParam = true
+				}
+				if _, ok := actualParams[paramCode]; !ok {
+					if !canMissParam {
+						RaiseException("rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s]", paramCode))
+					}
+				} else {
+					if len(paramStrs) > 1 {
+						paramType := paramStrs[1]
+						var err error = nil
+						switch paramType {
+						case "string":
+						case "int":
+							_, err = r.GetInt(paramCode)
+						case "float":
+							_, err = r.GetFloat(paramCode)
+						case "bool":
+							_, err = r.GetBool(paramCode)
+						case "map":
+							r.GetMap(paramCode)
+						case "slice":
+							r.GetSlice(paramCode)
+						case "file":
+							_, _, err = r.GetFile(paramCode)
+						case "files":
+							_, err = r.GetFiles(paramCode)
+						default:
+							beego.Warn(fmt.Sprintf("unset type %s", paramType))
+						}
+						PanicNotNilError(err, "rest:missing_argument", fmt.Sprintf("missing or invalid argument: [%s](%s)", paramCode, paramType))
 					}
 				}
 			}
@@ -187,10 +229,111 @@ func (r *RestResource) checkValidToken() {
 	}
 }
 
+func (r *RestResource) mergeParams() {
+	token := r.Ctx.GetCookie("token")
+	if token != "" {
+		r.Input().Set("token", token)
+	}
+
+	// merge body params
+	bodyParams := make(map[string]interface{}, 0)
+	err := json.Unmarshal(r.Ctx.Input.RequestBody, &bodyParams)
+	if err == nil {
+		for k, v := range bodyParams {
+			strV := ""
+			switch t := v.(type) {
+			case string:
+				strV = fmt.Sprintf("%s", v.(string))
+			case int:
+				strV = fmt.Sprintf("%d", v.(int))
+			case float64:
+				strV = fmt.Sprintf("%g", v.(float64))
+			case Map:
+				bytes, _ := json.Marshal(v.(Map))
+				strV = string(bytes)
+			case []interface{}:
+				bytes, _ := json.Marshal(v.([]interface{}))
+				strV = string(bytes)
+			default:
+				beego.Warn(fmt.Sprintf("unknown type %t", t))
+			}
+			r.Input().Set(k, strV)
+		}
+	}
+}
+
+func (r *RestResource) setBusinessContext() {
+	dbUsed, _ := beego.AppConfig.Bool("db::DB_USED")
+	if !dbUsed {
+		return
+	}
+	bContext := context.Background()
+	bContext = context.WithValue(bContext, "orm", orm.NewOrm())
+	r.Ctx.Input.SetData("bContext", bContext)
+}
+
+func (r *RestResource) GetBusinessContext() context.Context {
+	dbUsed, _ := beego.AppConfig.Bool("db::DB_USED")
+	if !dbUsed {
+		return nil
+	}
+	if r.Ctx.Input.GetData("bContext") == nil {
+		r.setBusinessContext()
+	}
+	return r.Ctx.Input.GetData("bContext").(context.Context)
+}
+
+func (r *RestResource) beginTx() {
+	dbUsed, _ := beego.AppConfig.Bool("db::DB_USED")
+	if !dbUsed {
+		return
+	}
+	app := r.AppController.(RestResourceInterface)
+
+	ctx := r.GetBusinessContext()
+	o := GetOrmFromContext(ctx)
+	if o != nil {
+		r.Ctx.Input.SetData("disableTx", app.DisableTx())
+		if !app.DisableTx() {
+			err := o.Begin()
+			beego.Debug("[ORM] start transaction")
+			if err != nil {
+				beego.Error(err)
+			}
+		}
+	}
+}
+
+func (r *RestResource) commitTx() {
+	dbUsed, _ := beego.AppConfig.Bool("db::DB_USED")
+	if !dbUsed {
+		return
+	}
+	app := r.AppController.(RestResourceInterface)
+
+	ctx := r.GetBusinessContext()
+	o := GetOrmFromContext(ctx)
+	if o != nil {
+		if !app.DisableTx() {
+			err := o.Commit()
+			beego.Debug("[ORM] commit transaction")
+			if err != nil {
+				beego.Error(err)
+			}
+		}
+	}
+}
+
 func (r *RestResource) Prepare() {
+	r.mergeParams() // merge params
 	r.checkValidSign()
 	r.checkParams()
 	r.checkValidToken()
+	r.beginTx()
+}
+
+func (r *RestResource) Finish() {
+	r.commitTx()
 }
 
 func RegisterResources() {

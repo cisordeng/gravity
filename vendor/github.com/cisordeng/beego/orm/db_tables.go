@@ -335,23 +335,24 @@ func (t *dbTables) getCondSQL(cond *Condition, sub bool, tz *time.Location) (whe
 
 	mi := t.mi
 
-	for i, p := range cond.params {
-		if i > 0 {
+	for _, p := range cond.params {
+		wh := ""
+		if where != "" {
 			if p.isOr {
-				where += "OR "
+				wh += "OR "
 			} else {
-				where += "AND "
+				wh += "AND "
 			}
 		}
 		if p.isNot {
-			where += "NOT "
+			wh += "NOT "
 		}
 		if p.isCond {
 			w, ps := t.getCondSQL(p.cond, true, tz)
 			if w != "" {
 				w = fmt.Sprintf("( %s) ", w)
 			}
-			where += w
+			wh += w
 			params = append(params, ps...)
 		} else {
 			exprs := p.exprs
@@ -385,7 +386,7 @@ func (t *dbTables) getCondSQL(cond *Condition, sub bool, tz *time.Location) (whe
 			t.base.GenerateOperatorLeftCol(fi, operator, &leftCol)
 
 			if !empty {
-				where += fmt.Sprintf("%s %s ", leftCol, operSQL)
+				where += wh + fmt.Sprintf("%s %s ", leftCol, operSQL)
 				params = append(params, args...)
 			}
 		}

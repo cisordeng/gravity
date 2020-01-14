@@ -106,6 +106,10 @@ func (ctx *Context) SetCookie(name string, value string, others ...interface{}) 
 	ctx.Output.Cookie(name, value, others...)
 }
 
+func (ctx *Context) DelCookie(name string, value string) {
+	ctx.Output.Cookie(name, value, -1)
+}
+
 // GetSecureCookie Get secure cookie from request by a given key.
 func (ctx *Context) GetSecureCookie(Secret, key string) (string, bool) {
 	val := ctx.Input.Cookie(key)
