@@ -28,9 +28,6 @@ func (this *RhythmSet) Params() map[string][]string {
 func (this *RhythmSet) Get() {
 	id, _ := this.GetInt("id", 0)
 	rhythmSet := bRhythm.GetRhythmSet(id)
-	bRhythm.Fill([]*bRhythm.RhythmSet{ rhythmSet }, xenon.FillOption{
-		"with_rhythm": true,
-	})
 	data := bRhythm.EncodeRhythmSet(rhythmSet)
 	this.ReturnJSON(data)
 }

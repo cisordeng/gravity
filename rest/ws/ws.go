@@ -37,6 +37,7 @@ var upgrader = websocket.Upgrader{
 
 func (this *Ws) Get() {
 	name := this.GetString("name")
+	fmt.Println(name)
 	ws, err := upgrader.Upgrade(this.Ctx.ResponseWriter, this.Ctx.Request, nil)
 	if err != nil {
 		log.Fatal(err)

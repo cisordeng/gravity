@@ -14,8 +14,6 @@ type RhythmSet struct {
 	Avatar string
 	PlayedCount int
 	CreatedAt time.Time
-
-	Rhythms []*Rhythm
 }
 
 func init() {

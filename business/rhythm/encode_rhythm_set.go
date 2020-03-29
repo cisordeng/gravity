@@ -8,10 +8,6 @@ func EncodeRhythmSet(rhythmSet *RhythmSet) xenon.Map {
 	if rhythmSet == nil {
 		return nil
 	}
-	mapRhythms := make([]xenon.Map, 0)
-	if rhythmSet.Rhythms != nil {
-		mapRhythms = EncodeManyRhythm(rhythmSet.Rhythms)
-	}
 
 	mapRhythmSet := xenon.Map{
 		"id": rhythmSet.Id,
@@ -21,9 +17,6 @@ func EncodeRhythmSet(rhythmSet *RhythmSet) xenon.Map {
 		"avatar": rhythmSet.Avatar,
 		"played_count": rhythmSet.PlayedCount,
 		"created_at": rhythmSet.CreatedAt.Format("2006-01-02 15:04:05"),
-
-		"rhythms": mapRhythms,
-
 	}
 	return mapRhythmSet
 }
