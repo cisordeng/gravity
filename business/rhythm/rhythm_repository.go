@@ -18,7 +18,7 @@ func GetOneRhythm(filters xenon.Map) *Rhythm {
 
 	err := qs.One(&model)
 	xenon.PanicNotNilError(err, "raise:rhythm:not_exits", "歌曲不存在")
-	return nil
+	return InitRhythmFromModel(&model)
 }
 
 func GetPagedRhythms(page *xenon.Paginator, filters xenon.Map, orderExprs ...string ) ([]*Rhythm, xenon.PageInfo) {

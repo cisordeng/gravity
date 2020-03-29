@@ -25,7 +25,7 @@ type Rhythm struct {
 func init() {
 }
 
-func (this *Rhythm) RedirectUrl() string {
+func (this *Rhythm) RedirectUrl() {
 	resp, err := http.Head(this.Url)
 	if err != nil {
 		this.Url = ""
