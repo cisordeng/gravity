@@ -1,15 +1,10 @@
 package rhythm
 
 import (
-	"net/http"
-	"strings"
-
 	"github.com/cisordeng/beego/xenon"
 )
 
 func EncodeRhythm(rhythm *Rhythm) xenon.Map {
-
-	url := getRedirectUrl(rhythm.Url)
 
 	mapRhythm := xenon.Map{
 		"id": rhythm.Id,
@@ -17,7 +12,7 @@ func EncodeRhythm(rhythm *Rhythm) xenon.Map {
 
 		"name": rhythm.Name,
 		"avatar": rhythm.Avatar,
-		"url": strings.Replace(url, "http://", "https://", 1),
+		"url": rhythm.Url,
 		"lyric": rhythm.Lyric,
 		"translated_lyric": rhythm.TranslatedLyric,
 		"singer_name": rhythm.SingerName,
@@ -34,12 +29,4 @@ func EncodeManyRhythm(rhythms []*Rhythm) []xenon.Map {
 		mapRhythms = append(mapRhythms, EncodeRhythm(rhythm))
 	}
 	return mapRhythms
-}
-
-func getRedirectUrl(url string) string {
-	resp, err := http.Head(url)
-	if err != nil {
-		return ""
-	}
-	return resp.Request.URL.String()
 }

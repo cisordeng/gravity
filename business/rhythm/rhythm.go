@@ -1,6 +1,8 @@
 package rhythm
 
 import (
+	"net/http"
+	"strings"
 	"time"
 
 	mRhythm "nature/model/rhythm"
@@ -21,6 +23,14 @@ type Rhythm struct {
 }
 
 func init() {
+}
+
+func (this *Rhythm) RedirectUrl() string {
+	resp, err := http.Head(this.Url)
+	if err != nil {
+		this.Url = ""
+	}
+	this.Url = strings.Replace(resp.Request.URL.String(), "http://", "https://", 1)
 }
 
 func InitRhythmFromModel(model *mRhythm.Rhythm) *Rhythm {

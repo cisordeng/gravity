@@ -28,6 +28,7 @@ func (this *Rhythm) Params() map[string][]string {
 func (this *Rhythm) Get() {
 	id, _ := this.GetInt("id", 0)
 	rhythm := bRhythm.GetRhythm(id)
+	rhythm.RedirectUrl() // 重定向url
 	data := bRhythm.EncodeRhythm(rhythm)
 	this.ReturnJSON(data)
 }
